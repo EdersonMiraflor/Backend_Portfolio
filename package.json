@@ -29,7 +29,6 @@
     "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
-    "@types/openai": "^4.29.2",
     "@types/sendgrid__mail": "^7.2.0"
   }
 }
