@@ -6,6 +6,7 @@
     "build": "tsc",
     "start": "ts-node src/server.ts",
     "start:prod": "node dist/server.js",
+    "postinstall": "npm install --include=dev"
   },
   "author": "",
   "license": "ISC",
