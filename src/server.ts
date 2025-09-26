@@ -1,8 +1,9 @@
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import chatbotRoutes from './routes/chatbot.routes';
 import emailRoutes from './routes/email.routes';
+import { Request, Response } from 'express';
 
 
 dotenv.config();
@@ -24,7 +25,7 @@ app.use(cors());
 app.use(express.json());
 
 // Health check
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
   res.send("Server Response: Server is running! Everything works successfully");
   console.log("Log: Server is running Successfully!");
 });
