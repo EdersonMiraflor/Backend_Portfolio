@@ -5,7 +5,7 @@ import chatbotRoutes from './routes/chatbot.routes';
 import emailRoutes from './routes/email.routes';
 
 
-dotenv.config();
+dotenv.config({ path: './src/configurations/.env', quiet: true });
 
 interface Config {
   port: number;
@@ -14,7 +14,7 @@ interface Config {
 
 const config: Config = {
   port: Number(process.env.PORT),
-  nodeEnv: process.env.NODE_ENV || 'deployment',
+  nodeEnv: process.env.NODE_ENV || '',
 };
 
 const app = express();
@@ -35,7 +35,7 @@ app.use('/api/email', emailRoutes);
 
 
 // Debug SendGrid API key
-// console.log('SENDGRID_API_KEY from env:', process.env.SENDGRID_API_KEY);
+console.log('SENDGRID_API_KEY from env:', process.env.SENDGRID_API_KEY);
 
 // Start server
 app.listen(config.port, () => {
