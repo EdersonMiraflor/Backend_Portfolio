@@ -9,12 +9,12 @@
     "postinstall": "npm install --include=dev"
   },
   "dependencies": {
-    "@sendgrid/mail": "^8.1.6",
-    "axios": "^1.11.0",
+    "express": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "express": "^5.1.0",
+    "axios": "^1.11.0",
     "nodemailer": "^7.0.5",
+    "@sendgrid/mail": "^8.1.6",
     "openai": "^5.12.2",
     "typescript": "^5.8.3",
     "ts-node": "^10.9.2",
@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "eslint": "^9.31.0",
-    "nodemon": "^3.1.10",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "nodemon": "^3.1.10"
   }
 }
