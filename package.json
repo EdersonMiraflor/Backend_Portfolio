@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "dist/server.js",
   "scripts": {
-    "build": "npm install && node_modules/.bin/tsc",
+    "build": "npm install && tsc",
     "start": "ts-node src/server.ts",
     "start:prod": "node dist/server.js"
   },
