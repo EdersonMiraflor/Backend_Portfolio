@@ -24,7 +24,7 @@ app.use(cors());
 app.use(express.json());
 
 // Health check
-app.get('/', (req, res) => {
+app.get('/', (req: express.Request, res: express.Response) => {
   res.send("Server Response: Server is running! Everything works successfully");
   console.log("Log: Server is running Successfully!");
 });
