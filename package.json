@@ -5,7 +5,8 @@
   "scripts": {
     "build": "tsc",
     "start": "ts-node src/server.ts",
-    "start:prod": "node dist/server.js"
+    "start:prod": "node dist/server.js",
+    "postinstall": "npm install --include=dev"
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.6",
