@@ -1,9 +1,10 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/server.js",
   "scripts": {
     "dev": "ts-node src/server.ts",
+    "prebuild": "npm install",
     "build": "tsc",
     "start": "node dist/server.js"
   },
@@ -17,17 +18,13 @@
     "dotenv": "^16.3.1",
     "express": "^5.1.0",
     "nodemailer": "^7.0.5",
-    "openai": "^5.12.2",
-    "@types/node": "^24.3.0",
-    "@types/express": "^5.0.3",
-    "@types/cors": "^2.8.19",
-    "@types/nodemailer": "^7.0.0"
+    "openai": "^5.12.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
-    "@types/node": "^24.5.2",
-    "@types/nodemailer": "^7.0.1",
+    "@types/node": "^24.3.0",
+    "@types/nodemailer": "^7.0.0",
     "eslint": "^9.31.0",
     "nodemon": "^3.1.10",
     "prettier": "^3.6.2",
@@ -35,6 +32,6 @@
     "typescript": "^5.8.3"
   },
   "engines": {
-    "node": "18.x"
+    "node": "20.x"
   }
 }
