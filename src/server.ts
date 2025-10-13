@@ -34,16 +34,12 @@ app.get("/", (req, res) => {
 app.use("/api/chatbot", chatbotRoutes);
 app.use("/api/email", emailRoutes);
 
-
-// Debug SendGrid API key
-console.log('SENDGRID_API_KEY from env:', process.env.SENDGRID_API_KEY);
-
 // Start server
 app.listen(config.port, () => {
   console.log(`🚀 Server running on port ${config.port} in ${config.nodeEnv} mode.`);
 });
 
-// simple logger
+// simple logger  
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.ip} ${req.method} ${req.originalUrl} UA="${req.get('user-agent')}"`);
   next();
