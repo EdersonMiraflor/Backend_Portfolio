@@ -43,4 +43,11 @@ app.listen(config.port, () => {
   console.log(`🚀 Server running on port ${config.port} in ${config.nodeEnv} mode.`);
 });
 
+// simple logger
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.ip} ${req.method} ${req.originalUrl} UA="${req.get('user-agent')}"`);
+  next();
+});
+
+
 export default config;
