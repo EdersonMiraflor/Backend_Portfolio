@@ -25,15 +25,16 @@ export const sendEmail = async (req: Request, res: Response) => {
       message: `
         Hello Ederson, You've received a new message from your portfolio contact form:
 
+        Email Content
         Name: ${name}
         Email: ${email}
-        Subject: ${subject}
-
+        Subject: ${subject} 
         Message: ${message}
 
         ---
         This is an automated message from Ederson's Portfolio.
         This Email is sent by: ${email}
+        This Email is sent to: miraflorederson@gmail.com
       `.trim(),
       _replyto: email, // Formspree uses _replyto for reply-to functionality
     }, {
