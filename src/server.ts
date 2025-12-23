@@ -1,12 +1,12 @@
+// Load environment variables FIRST before any other imports
 import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import cors from "cors";
 
 import chatbotRoutes from "./routes/chatbot.routes";
 import emailRoutes from "./routes/email.routes";
-
-// Load environment variables
-dotenv.config();
 
 interface Config {
   port: number;

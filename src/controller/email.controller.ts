@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import sgMail, { ResponseError } from '@sendgrid/mail';
+import axios from 'axios';
 
 export const sendEmail = async (req: Request, res: Response) => {
   const { name, email, subject, message } = req.body;
@@ -8,50 +8,67 @@ export const sendEmail = async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'All fields are required.' });
   }
 
-  // Ensure environment variables are defined
-  const toEmail = process.env.YOUR_EMAIL;
-  const fromEmail = process.env.SENDER_EMAIL;
-  const apiKey = process.env.SENDGRID_API_KEY;
+  // Get Formspree endpoint from environment variables (loaded at runtime)
+  const FORMSPREE_ENDPOINT = process.env.FORMSPREE;
 
-  if (!toEmail || !fromEmail || !apiKey) {
-    console.error('Missing environment variables: YOUR_EMAIL, SENDER_EMAIL, or SENDGRID_API_KEY');
-    return res.status(500).json({ error: 'Server configuration error.' });
+  if (!FORMSPREE_ENDPOINT) {
+    console.error('Missing environment variable: FORMSPREE');
+    return res.status(500).json({ error: 'Server configuration error: FORMSPREE endpoint is not configured.' });
   }
-
-  // Set API key dynamically
-  sgMail.setApiKey(apiKey);
 
   try {
-    const msg: sgMail.MailDataRequired = {
-      to: toEmail,
-      from: fromEmail,
-      replyTo: { email },
+    // Forward the request to Formspree
+    const response = await axios.post(FORMSPREE_ENDPOINT, {
+      name,
+      email,
       subject: `Portfolio Contact: ${subject} from ${name} (${email})`,
-      html: `
-        <p>Hello Ederson,</p>
-        <p>You’ve received a new message from your portfolio contact form:</p>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Subject:</strong> ${subject}</p>
-        <p><strong>Message:</strong> ${message}</p>
-        <hr>
-        <p style="font-size: 12px; color: #666;">
-          This is an automated message from Ederson's Portfolio. 
-          <a href="https://yourportfolio.com/unsubscribe" target="_blank">Unsubscribe</a> (optional for contact inquiries).
-        </p>
-        <p style="font-size: 10px; color: #999;">
-          Sent by Ederson Miraflor | miraflorederson@gmail.com | Philippines
-        </p>
-      `,
-    };
+      message: `
+        Hello Ederson, You've received a new message from your portfolio contact form:
 
-    await sgMail.send(msg);
+        Name: ${name}
+        Email: ${email}
+        Subject: ${subject}
 
-    res.status(200).json({ message: 'Email sent successfully!' });
+        Message: ${message}
+
+        ---
+        This is an automated message from Ederson's Portfolio.
+        This Email is sent by: ${email}
+      `.trim(),
+      _replyto: email, // Formspree uses _replyto for reply-to functionality
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    // Formspree returns 200 on success
+    if (response.status === 200 || response.status === 201) {
+      res.status(200).json({ message: 'Email sent successfully!' });
+    } else {
+      res.status(500).json({ error: 'Failed to send email.' });
+    }
   } catch (error) {
-    // Type assertion for SendGrid ResponseError
-    const sendGridError = error as ResponseError;
-    console.error('Error sending email:', sendGridError.response ? sendGridError.response.body : sendGridError);
-    res.status(500).json({ error: 'Failed to send email.' });
+    console.error('Error sending email to Formspree:', error);
+    
+    // Handle axios errors with more detail
+    if (axios.isAxiosError(error)) {
+      const status = error.response?.status || 500;
+      const errorData = error.response?.data;
+      const errorMessage = errorData?.error || errorData?.message || error.message || 'Failed to send email.';
+      
+      console.error('Formspree API Error Details:', {
+        status,
+        statusText: error.response?.statusText,
+        data: errorData,
+        url: error.config?.url,
+      });
+      
+      res.status(status).json({ error: errorMessage });
+    } else {
+      console.error('Unexpected error:', error);
+      res.status(500).json({ error: 'Failed to send email.' });
+    }
   }
 };
+
